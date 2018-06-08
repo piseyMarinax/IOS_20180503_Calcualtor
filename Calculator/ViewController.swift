@@ -53,7 +53,7 @@ class ViewController: UIViewController {
     var operation = ""
     var newCalculate:Bool? = false
     var isCalculate = false
- 
+    var isNegative = false
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
@@ -66,7 +66,6 @@ class ViewController: UIViewController {
     
     @objc func buttonNumberClick(_ sender:UIButton)
     {
-        
         numberOnScreen2 = lableScreen2.text!
         
         if(operation.isEmpty && newCalculate == true)
@@ -117,12 +116,13 @@ class ViewController: UIViewController {
     }
     
     @IBAction func buttonNagative(_ sender: UIButton) {
+      
     }
     
     @IBAction func buttonRemainder(_ sender: UIButton) {
         numberOnScreen1 = lableScreen2.text!
         operation = "%"
-        lableScreen1.text = numberOnScreen1 + operation
+         lableScreen1.text = "\(numberOnScreen1) \(operation)"
         
        
         lableScreen2.text = "0"
@@ -136,7 +136,7 @@ class ViewController: UIViewController {
         }
         numberOnScreen1 = lableScreen2.text!
         operation = "/"
-        lableScreen1.text = numberOnScreen1 + operation
+        lableScreen1.text = "\(numberOnScreen1) \(operation)"
         
         lableScreen2.text = "0"
         numberOnScreen2 = ""
@@ -149,7 +149,7 @@ class ViewController: UIViewController {
         }
         numberOnScreen1 = lableScreen2.text!
         operation = "*"
-        lableScreen1.text = numberOnScreen1 + operation
+         lableScreen1.text = "\(numberOnScreen1) \(operation)"
         
         lableScreen2.text = "0"
         numberOnScreen2 = ""
@@ -162,7 +162,7 @@ class ViewController: UIViewController {
         }
         numberOnScreen1 = lableScreen2.text!
         operation = "-"
-        lableScreen1.text = numberOnScreen1 + operation
+        lableScreen1.text = "\(numberOnScreen1) \(operation)"
         
         lableScreen2.text = "0"
         numberOnScreen2 = ""
@@ -175,7 +175,7 @@ class ViewController: UIViewController {
         }
         numberOnScreen1 = lableScreen2.text!
         operation = "+"
-        lableScreen1.text = numberOnScreen1 + operation
+         lableScreen1.text = "\(numberOnScreen1) \(operation)"
         
         lableScreen2.text = "0"
         numberOnScreen2 = ""
@@ -205,46 +205,51 @@ class ViewController: UIViewController {
             return
         }
         
+        if(String(result) == "inf")
+        {
+            lableScreen1.text = ""
+            lableScreen2.text = "Error"
+            operation = ""
+            newCalculate = true
+            return
+        }
         
         lableScreen1.text = "\(lableScreen1.text!) \(numberOnScreen2)"
-        lableScreen2.text = String(result)
+        lableScreen2.text = String(result).clean
         operation = ""
         newCalculate = true;
-        
-        
-//        if(operation == "+")
-//        {
-//            numberOnScreen2 = lableScreen2.text!
-//
-//             print(numberOnScreen1);
-//            print(numberOnScreen2);
-//
-//            lableScreen1.text = "\(lableScreen1.text!) \(numberOnScreen2)"
-//            var result:Double = Double(numberOnScreen1)! + Double(numberOnScreen2)!
-//           lableScreen2.text = String(result)
-//
-//            operation = ""
-//            newCalculate = true;
-//        }
-        
-//        if(operation == "-")
-//        {
-//            numberOnScreen2 = lableScreen2.text!
-//
-//            print(numberOnScreen1);
-//            print(numberOnScreen2);
-//
-//            lableScreen1.text = "\(lableScreen1.text!) \(numberOnScreen2)"
-//            var result:Double = Double(numberOnScreen1)! - Double(numberOnScreen2)!
-//            lableScreen2.text = String(result)
-//
-//            operation = ""
-//            newCalculate = true;
-//        }
-        
-        
     }
     
+    
+    
 
+}
+
+extension String {
+    var clean: String
+    {
+        var stringCharacters = Array(self.characters)
+        var isDoubleDot = false
+        for character in stringCharacters {
+            if character == "." {
+                isDoubleDot = true
+                break
+            } else {
+                isDoubleDot = false
+            }
+        }
+        if isDoubleDot == true {
+            while 1 == 1 {
+                if  stringCharacters[stringCharacters.count-1] == "0" || stringCharacters[stringCharacters.count-1] == "."  {
+                    stringCharacters.remove(at: stringCharacters.count-1)
+                } else {
+                    break
+                }
+            }
+            return String(stringCharacters)
+        } else {
+            return self
+        }
+    }
 }
 
